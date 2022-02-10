@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <title>Heads and Tails</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Heads and Tails</h1>
+        <hr>
+
+        <p id="player_choice">&nbsp;</p>
+        <p id="computer_choice">&nbsp;</p>
+        <p class="text-danger" id="round_result">&nbsp;</p>
+
+        <hr>
+        <p>Choose Heads or Tails</p>
+        <br>
+        <br>
+
+        <button class="btn btn-outline-secondary" onclick="choose(0);">Heads</button>
+        <button class="btn btn-outline-danger" onclick="choose(1)">Tails</button>
+
+    </div>
+</body>
+<script>
+    function choose(x) {
+        fetch("/play?c=" + x)
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data);
+            //we replacing log data by displaying on our web page
+            if (x == 0) {
+                document.getElementById("player_choice").innerHTML = "Player chose Heads";
+            } else if (x == 1) {
+                document.getElementById("player_choice").innerHTML = "Player chose Tails";
+            } 
+            document.getElementById("computer_choice").innerHTML = data.computer_choice;
+            document.getElementById("round_result").innerHTML = data.round_result;
+
+        })
+
+        
+        
+    }
+</script>
+</html>
