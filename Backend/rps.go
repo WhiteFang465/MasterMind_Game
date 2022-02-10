@@ -1,52 +1,30 @@
 package rps
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 )
 
-
 const (
-	HEADS        = 0 // beats scissors. (scissors + 1) % 3 = 0
-	TAILS        = 1 // beats rock. (rock + 1) % 3 = 1
 	
+
 )
 
 type Round struct {
-	Winner         int    `json:"winner"`
-	ComputerChoice string `json:"computer_choice"`
-	RoundResult    string `json:"round_result"`
+	Winner int `json:"winner"`
+	
 }
 
 func PlayRound(playerValue int) Round {
-	rand.Seed(time.Now().UnixNano())
-	computerValue := rand.Intn(2)
-	computerChoice := ""
-	roundResult := ""
-	winner := 0
 
-	switch computerValue {
-	case HEADS:
-		computerChoice = "Output is HEADS"
-		break
-	case TAILS:
-		computerChoice = "Output is TAILS"
-		break
-	
-	default:
-	}
-
-	if playerValue == computerValue {
-		roundResult = "It's a Win"
-		//winner = "PLAYERWINS"
-	} else {
-		roundResult = "You Lost"
-		//winner = "PLAYERLOSE"
-	}
-
+	fmt.Println(randomNoGenerator())
 	var result Round
-	result.Winner = winner
-	result.ComputerChoice = computerChoice
-	result.RoundResult = roundResult
+	result.Winner = playerValue
+	
 	return result
+}
+func randomNoGenerator()int{
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(9999-1000) + 1000
 }

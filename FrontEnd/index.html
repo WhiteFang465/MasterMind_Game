@@ -26,24 +26,29 @@
         <button class="btn btn-outline-danger" onclick="choose(1)">Tails</button>
 
     </div> -->
-    <Div>
+    <Div class="container">
         <h1>MasterMind</h1>
+        <hr>
+        <div class="container">
+                <p id="round_result"></p>
+                <p id="randomNumber"></p>
+        </div>
+        <hr>
+        <h2>Enter a 4 digit Number</h2>
+        <input type="number" name="number" id="userInput">
+        <br>
+        <button class="btn btn-success" type="submit" onclick="choose(document.getElementById('userInput').value)">Submit</button>
     </Div>
 </body>
 <script>
     function choose(x) {
+        
         fetch("/play?c=" + x)
         .then(response => response.json())
         .then(data => {
-            //console.log(data);
-            //we replacing log data by displaying on our web page
-            if (x == 0) {
-                document.getElementById("player_choice").innerHTML = "Player chose Heads";
-            } else if (x == 1) {
-                document.getElementById("player_choice").innerHTML = "Player chose Tails";
-            } 
-            document.getElementById("computer_choice").innerHTML = data.computer_choice;
-            document.getElementById("round_result").innerHTML = data.round_result;
+            console.log(data);
+            document.getElementById("round_result").innerHTML = data.winner;
+            document.getElementById("randomNumber").innerHTML =data.number;
 
         })
 
