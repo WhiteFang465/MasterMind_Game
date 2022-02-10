@@ -63,3 +63,13 @@ func uniqueGenerator()int{
 	}
 	return uniqueNumber
 }
+
+func countDigits(number int)int{
+	counter:=0
+	for(number!=0){
+number=number/10
+counter+=1
+	}
+	return counter
+}
+
