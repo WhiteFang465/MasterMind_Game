@@ -15,3 +15,5 @@
 # vendor/
 launch.json
 .vscode
+test.go
+Playground
