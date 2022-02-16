@@ -31,6 +31,7 @@
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            console.log(data.computer_generated)
             document.getElementById("round_result").innerHTML = data.winner;           
             document.getElementById("countMissplace").innerHTML = "There are "+data.miss_place +" numbers in incorrect position";
             document.getElementById("countInPlace").innerHTML="There are "+data.in_place +" numbers in incorrect position";

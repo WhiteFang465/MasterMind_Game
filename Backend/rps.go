@@ -1,6 +1,7 @@
 package rps
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -14,6 +15,7 @@ type Round struct {
 	Winner         string `json:"winner"`
 	CountMissplace string `json:"miss_place"`
 	CountInPlace   string `json:"in_place"`
+	ComputerGenerated int `json:"computer_generated"`
 }
 
 func PlayRound(playerValue int) Round {
@@ -22,16 +24,18 @@ func PlayRound(playerValue int) Round {
 	systemGenerated := uniqueGenerator()
 	counterInPlacement := inPlaceMatches(playerValue, systemGenerated)
 	counterOutOfPlacement := outOfPlace(playerValue, systemGenerated)
-
+	fmt.Println(systemGenerated)
 	if counterInPlacement == 4 {
 		result.Winner = "You Win"
 		result.CountInPlace = strconv.Itoa(counterInPlacement)
 		result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
+		result.ComputerGenerated=systemGenerated
 		return result
 	} else {
 		result.Winner = "Incorrect Number"
 		result.CountInPlace = strconv.Itoa(counterInPlacement)
 		result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
+		result.ComputerGenerated=systemGenerated
 		return result
 	}
 
