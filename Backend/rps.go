@@ -18,13 +18,15 @@ type Round struct {
 	ComputerGenerated int `json:"computer_generated"`
 }
 
-func PlayRound(playerValue int) Round {
+func PlayRound(playerValue int,generatedNumber int) Round {
 	var result Round
 	
-	systemGenerated := uniqueGenerator()
+	//systemGenerated := uniqueGenerator()
+	systemGenerated:=generatedNumber
 	counterInPlacement := inPlaceMatches(playerValue, systemGenerated)
 	counterOutOfPlacement := outOfPlace(playerValue, systemGenerated)
 	fmt.Println(systemGenerated)
+
 	if counterInPlacement == 4 {
 		result.Winner = "You Win"
 		result.CountInPlace = strconv.Itoa(counterInPlacement)
