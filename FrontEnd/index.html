@@ -1,45 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
     <title>Master Mind</title>
+
+    <style>
+        body {
+            background-image: url(https://wallpaper.dog/large/20427740.jpg);
+
+        }
+
+        h1 {
+            color: white;
+        }
+
+        h2 {
+            color: white;
+        }
+        h3 {
+            color: white;
+        }
+        h4 {
+            color: white;
+        }
+
+        p {
+            color: white;
+        }
+        ul.a {
+  list-style-type: circle;
+}
+    </style>
 </head>
+
 <body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="https://t3.ftcdn.net/jpg/04/00/47/88/360_F_400478854_eAL87XQTJyakxh1XSadIxSojtBjm7z8b.jpg"
+                width="30" height="30" class="d-inline-block align-top" alt="">
+            MasterMind
+        </a>
+        <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop"
+            aria-controls="offcanvasTop">Instruction</button>
+
+        <div class="offcanvas offcanvas-top h-auto" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel"  style="background-image: url(https://wallpaper.dog/large/20427740.jpg);">
+            <div class="offcanvas-header">
+                <h3 id="offcanvasTopLabel">Instruction</h3>
+                <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <h1> Welcome to the MasterMind Game.</h1>
+                <hr>
+                <h3>Follow the Instruction to play the game</h3>
+                <hr>
+                <ul>
+                    <li> <h4>You need to identify the number selected by the computer </h4></li>
+                    <li> <h4>You have unlimited Trials, On every Input you would be given two Hints </h4></li>
+                    <li><h4>First hint shows if the digits are present in the incorrect position</h4></li>
+                    <li><h4>Second Hint shows if the digit are present in the correct position</h4></li>
+                    <li><h4>Every digit of the number is unique</h4></li>
+                </ul>
+            </div>
+    </nav>
     <Div class="container">
-        <h1>MasterMind</h1>
+        <h1>MasterMind Game</h1>
         <hr>
+        <p>Read the Instruction before you play</p>
+    </div>
+
+    <hr>
+    <div class="container">
+
+        <p id="round_result"></p>
         <div class="container">
-                <p id="round_result"></p>
-                <p id="countMissplace"></p>
-                <p id="countInPlace"></p>
+            <p id="hint"></p>
+            <p id="countMissplace"></p>
+            <p id="countInPlace"></p>
         </div>
-        <hr>
+    </div>
+    <hr>
+    <div class="container">
+
+
         <h2>Enter a 4 digit Number</h2>
         <input type="number" name="number" id="userInput">
         <br>
-        <button class="btn btn-success" type="submit" onclick="choose(document.getElementById('userInput').value)">Submit</button>
-        
+        <hr>
+        <button class="btn btn-success" type="submit"
+            onclick="choose(document.getElementById('userInput').value)">Submit</button>
+
+    </div>
     </Div>
 </body>
 <script>
     function choose(x) {
-        
-        fetch("/play?c=" + x)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            console.log(data.computer_generated)
-            document.getElementById("round_result").innerHTML = data.winner;           
-            document.getElementById("countMissplace").innerHTML = "There are "+data.miss_place +" numbers in incorrect position";
-            document.getElementById("countInPlace").innerHTML="There are "+data.in_place +" numbers in correct position";
-        })
 
-        
-        
+
+
+        fetch("/play?c=" + x)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                console.log(data.computer_generated)
+
+                var winner = document.getElementById("round_result")
+                var missplace = document.getElementById("countMissplace")
+                var inPlace = document.getElementById("countInPlace")
+
+
+
+                if (data.winner == "You Win") {
+                    document.getElementById("hint").innerHTML = "HINT"
+                    winner.style.cssText = `
+                color:#39FF14;
+                font-size:100px;
+                font-weight:bold
+                `
+                    winner.innerHTML = data.winner;
+                    missplace.innerHTML = "";
+                    inPlace.innerHTML = "";
+                }
+                else if (data.winner == "Enter a 4 digit number" || data.winner == "Every digit of the number should be unique") {
+                    winner.style.cssText = `
+                color:#FF3131;
+                font-weight:bold;
+                font-size:50px;
+                `
+                    winner.innerHTML = data.winner;
+                    missplace.innerHTML = "";
+                    inPlace.innerHTML = "";
+                    document.getElementById("hint").innerHTML = ""
+
+                }
+                else if (data.winner == "Incorrect Number") {
+                    document.getElementById("hint").innerHTML = "HINT"
+                    winner.style.cssText = `
+                color:#FF3131;
+                font-weight:bold;
+                font-size:50px;
+                `
+                    winner.innerHTML = data.winner;
+                    missplace.innerHTML = "There are " + data.miss_place + " numbers in incorrect position";
+                    inPlace.innerHTML = "There are " + data.in_place + " numbers in correct position";
+                }
+            })
+
+
+
     }
 </script>
+
 </html>

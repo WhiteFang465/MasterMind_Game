@@ -2,9 +2,8 @@ package rps
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
-	"time"
+	
 )
 
 const (
@@ -21,32 +20,46 @@ type Round struct {
 func PlayRound(playerValue int,generatedNumber int) Round {
 	var result Round
 	
-	//systemGenerated := uniqueGenerator()
-	systemGenerated:=generatedNumber
-	counterInPlacement := inPlaceMatches(playerValue, systemGenerated)
-	counterOutOfPlacement := outOfPlace(playerValue, systemGenerated)
-	fmt.Println(systemGenerated)
-
-	if counterInPlacement == 4 {
-		result.Winner = "You Win"
-		result.CountInPlace = strconv.Itoa(counterInPlacement)
-		result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
-		result.ComputerGenerated=systemGenerated
-		return result
-	} else {
-		result.Winner = "Incorrect Number"
-		result.CountInPlace = strconv.Itoa(counterInPlacement)
-		result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
-		result.ComputerGenerated=systemGenerated
+	if !digitValidator(playerValue) {
+		
+	if countDigits(playerValue)==4 {
+		systemGenerated:=generatedNumber
+		counterInPlacement := inPlaceMatches(playerValue, systemGenerated)
+		counterOutOfPlacement := outOfPlace(playerValue, systemGenerated)
+		fmt.Println(systemGenerated)
+	
+		if counterInPlacement == 4 {
+			result.Winner = "You Win"
+			result.CountInPlace = strconv.Itoa(counterInPlacement)
+			result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
+			result.ComputerGenerated=systemGenerated
+			return result
+		} else {
+			result.Winner = "Incorrect Number"
+			result.CountInPlace = strconv.Itoa(counterInPlacement)
+			result.CountMissplace = strconv.Itoa(counterOutOfPlacement)
+			result.ComputerGenerated=systemGenerated
+			return result
+		}
+		
+	}else{
+		result.Winner="Enter a 4 digit number"
+		result.CountInPlace=strconv.Itoa(0)
+		result.CountMissplace=strconv.Itoa(0)
+		result.ComputerGenerated=0
 		return result
 	}
+	
+	}else{
+	result.Winner="Every digit of the number should be unique"
+	result.CountInPlace=strconv.Itoa(0)
+	result.CountMissplace=strconv.Itoa(0)
+	result.ComputerGenerated=0
+	return result
+}
 
 }
 
-func randomNoGenerator() int {
-	rand.Seed(time.Now().UnixNano())
-	return rand.Intn(9999-1000) + 1000
-}
 
 func digitValidator(number int) bool {
 	firstNumber := number / 1000
@@ -66,30 +79,16 @@ func digitValidator(number int) bool {
 
 }
 
-func uniqueGenerator() int {
 
-	var uniqueNumber int
 
-	for flag := true; flag; flag = false {
-		for i := 0; i < ARRAY_SIZE; i++ {
-			for digitValidator(uniqueNumber) {
-				uniqueNumber = randomNoGenerator()
-			}
-			flag = true
-
-		}
+func countDigits(number int) int {
+	counter := 0
+	for number != 0 {
+		number = number / 10
+		counter += 1
 	}
-	return uniqueNumber
+	return counter
 }
-
-// func countDigits(number int) int {
-// 	counter := 0
-// 	for number != 0 {
-// 		number = number / 10
-// 		counter += 1
-// 	}
-// 	return counter
-// }
 
 func userInputNumberSeparator(number int) [4]int {
 	var arr [4]int

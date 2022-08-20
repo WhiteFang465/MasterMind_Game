@@ -5,10 +5,9 @@ import (
 	"html/template"
 	"log"
 	"math/rand"
-	rps "myapp/Backend"
+    "myapp/Backend"
 	"net/http"
 	"strconv"
-
 	"time"
 )
 
@@ -17,14 +16,8 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func playRound(w http.ResponseWriter, r *http.Request) {
-	//i have added here playerChoice variable
-	//from object request, we getting variable "c" content
 	playerChoice, _ := strconv.Atoi(r.URL.Query().Get("c"))
-	//generatedNumber := -1
-	//if generatedNumber == -1 {
-	//const generatedNumber int
-	//generatedNumber= uniqueGenerator()
-	//}
+	
 	result := rps.PlayRound(playerChoice, generatedNumber)
 
 	out, err := json.MarshalIndent(result, "", "    ")
@@ -35,16 +28,13 @@ func playRound(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
 }
-func start(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "./FrontEnd/index.html")
-}
+
 
 var generatedNumber int
 
 func main() {
 	http.HandleFunc("/play", playRound)
 	http.HandleFunc("/", homePage)
-	http.HandleFunc("/start", start)
 	generatedNumber = uniqueGenerator()
 	log.Println("Starting web server on port 8080")
 	http.ListenAndServe(":8080", nil)
